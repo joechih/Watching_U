@@ -1,15 +1,4 @@
-#!/bin/sh 
-# #####################################################################	
-#									
-#	Copyright (c) 2004-2008 NCHC					
-#	  All Rights Reserved						
-#									
-#	THIS IS UNPUBLISHED PROPRIETARY SOURCE CODE OF NCHC		
-#	The copyright notice above does not evidence any actual 	
-#	or intended publication of such source code.			
-#									
-# #####################################################################	
-#									
+#!/bin/sh 				
 #  NAME									
 #	dbqacct.sh - process LSF accounting file 	
 #									
@@ -27,7 +16,7 @@
 #	Zhoujin Wu (ZjW)	< zjwu AT nchc DOT org DOT tw >		
 #	Joe Chih ( joe@nchc.org.tw )								
 #  REMARK								
-#    1. This script should be run from cron (acctadm) at 1:30 AM does process	
+#   1. This script should be run from cron (acctadm) at 1:30 AM does process	
 #	accounting.  But also can be run manually to fix.		
 #    							
 #									
@@ -37,11 +26,11 @@
 #	1.0	2008/08/08	(ZjW)					
 #		Totally rewrite						
 #	1.5 2011/06/27 (Joe Chih)
-#  Platform
-#  KM CLUSTER LINUX								
-# #####################################################################	#
+#  PLATFORM
+#   KM CLUSTER LINUX								
+#######################################################################
 
-# #####################################################################	#
+#######################################################################
 #
 #	Commands that be used in this script
 #
@@ -72,8 +61,8 @@ YDATE=${YYYY}${MM}${DD}
 
 # The output files
 TEMP_FILE=${OUTPUT}/${YYYY}/${MM}/accounting
-QUEUE_FILE=${OUTPUT}/${YYYY}/${MM}/dbqacct.${YDATE}
-QUEUE_LOG=${OUTPUT}/${YYYY}/${MM}/dbqacct.log.${YDATE}
+OUTPUT_FILE=${OUTPUT}/${YYYY}/${MM}/dbqacct.${YDATE}
+OUTPUT_LOG=${OUTPUT}/${YYYY}/${MM}/dbqacct.log.${YDATE}
 
 # Data processing
 $GAWK '
@@ -112,7 +101,7 @@ $2 ~ /"6.2"/ && $24  >=1 {
 # Basic on the TEMP_FILE, re-order the field value then output the data
 	$GAWK '{
 print $2":"$3":"$4":"$1":"$5, $6":"$7, $8":"$9":"$10":"$11":"$12":"$13":"$14":"$15
-}' $TEMP_FILE > $QUEUE_FILE
+}' $TEMP_FILE > $OUTPUT_FILE
 # Basic on the TEMP_FILE, declaration with BEGIN{},{do some caculation} then use END{} to output data 
 	$GAWK 'BEGIN{
 	Scount=0;
@@ -127,7 +116,7 @@ $9 ~ "S" {
 Scount += 1;
 Ssum += $14*$12;}
 
-END{print "'${YYYY}'/'${MM}'/'${DD}'"":"Scount":"Ssum":"Pcount":"Psum}' $TEMP_FILE > $QUEUE_LOG
+END{print "'${YYYY}'/'${MM}'/'${DD}'"":"Scount":"Ssum":"Pcount":"Psum}' $TEMP_FILE > $OUTPUT_LOG
 
 else
 for d in $*
@@ -139,8 +128,8 @@ for d in $*
 	done
 # The output files
 TEMP_FILE=${OUTPUT}/${YYYY}/${MM}/accounting
-QUEUE_FILE=${OUTPUT}/${YYYY}/${MM}/dbqacct.${YDATE}
-QUEUE_LOG=${OUTPUT}/${YYYY}/${MM}/dbqacct.log.${YDATE}
+OUTPUT_FILE=${OUTPUT}/${YYYY}/${MM}/dbqacct.${YDATE}
+OUTPUT_LOG=${OUTPUT}/${YYYY}/${MM}/dbqacct.log.${YDATE}
 
 # Data processing
 $GAWK '
@@ -176,7 +165,7 @@ $2 ~ /"6.2"/ && $24  >=1 {
 # Basic on the TEMP_FILE, re-order the field value then output the data
 	$GAWK '{
 print $2":"$3":"$4":"$1":"$5, $6":"$7, $8":"$9":"$10":"$11":"$12":"$13":"$14":"$15
-}' $TEMP_FILE > $QUEUE_FILE
+}' $TEMP_FILE > $OUTPUT_FILE
 # Basic on the TEMP_FILE, declaration with BEGIN{},{do some caculation} then use END{} to output data 
 	$GAWK 'BEGIN{
 	Scount=0;
@@ -191,7 +180,7 @@ $9 ~ "S" {
 Scount += 1;
 Ssum += $14*$12;}
 
-END{print "'${YYYY}'/'${MM}'/'${DD}'"":"Scount":"Ssum":"Pcount":"Psum}' $TEMP_FILE > $QUEUE_LOG
+END{print "'${YYYY}'/'${MM}'/'${DD}'"":"Scount":"Ssum":"Pcount":"Psum}' $TEMP_FILE > $OUTPUT_LOG
 fi
 
 exit 0
